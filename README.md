@@ -59,7 +59,7 @@ All three converge to the same optimal value function and policy.
 Hand-coded grid; no external simulator.
 
 \
-┌─────┬──--──┬──--──┬──--──┬──--──┐\
+┌-----┬-----┬-----┬------┬-----┐\
 │+++s1+++│+++s2+++│+++s3+++│+++s4+++│+++s5+++│\
 ├───┼───┼───┼───┼───┤\
 │-s6- │-s7P │-s8P |-s9- │s10-│\
