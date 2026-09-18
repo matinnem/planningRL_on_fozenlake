@@ -54,7 +54,7 @@ $v_{π_k}^{(j+1)}(s) = Σ_a π_k(a|s) ·[ Σ_r p(r|s,a)·r + γ · Σ_{s'} p(s'|
 $π_{k+1}(s) = arg max_π Σ_a π(a|s) · ( Σ_r p(r|s,a)·r + γ · Σ_{s'} p(s'|s,a) · v_{π_k}(s') )$\
 └─────────────── $q_{π_k}(s, a)$ ──────────────────┘
 
-Let $a_{k(s)}$`*` = $argmax_a$ $q_{π_k}(s, a)$. Then the greedy policy is\
+Let $`a*`_{k(s)}$`*` = $argmax_a$ $q_{π_k}(s, a)$. Then the greedy policy is\
 $π_{k+1}(a|s) = 1 if a == a_{k(s)}$`*`, else 0
 
 
