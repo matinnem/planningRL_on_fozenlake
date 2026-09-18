@@ -2,7 +2,7 @@
 ```markdown
 # Policy Iteration on FrozenLake 2×2 and 5×5
 
-A minimal, dependency-light implementation of **policy iteration** — the
+A minimal, dependency-light implementation of "policy iteration" — the
 other classical *planning* algorithm of reinforcement learning — on a
 hand-coded 2×2 and 5×5 FrozenLake grid. Only Python + NumPy.
 
