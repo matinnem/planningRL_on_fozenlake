@@ -128,14 +128,16 @@ cd planningRL_on_frozenlake
 
 # pick an algorithm
 git checkout value-iteration
-python valueIteration.py
+python valueIteration.py #2x2 environment
 python valueIteration5x5.py
 
 git checkout policy-iteration
-python policyIteration.py
+python policyIteration.py #2x2 environment
 python policyIteration5x5.py
 
 git checkout truncated-policy-iteration
 python truncatedPolicyIteration5x5.py
 ```
+
+**outputs of every method is available in its branch.**
 Requirements: Python 3.8+ and NumPy.
