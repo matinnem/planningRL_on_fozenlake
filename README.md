@@ -1,7 +1,7 @@
 ### **`Value Iteration`** on FrozenLake 2×2 and 5×5
 ```markdown 
 # Value Iteration on FrozenLake 2×2 and 5×5
-A minimal, dependency-light implementation of ```**value iteration**``` — the
+A minimal, dependency-light implementation of "value iteration" — the
 classic dynamic-programming *planning* algorithm from reinforcement
 learning — on a hand-coded 2×2 and 5×5 FrozenLake grid.
 Only Python + NumPy. No Gym, no Gymnasium.
