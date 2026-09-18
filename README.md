@@ -38,9 +38,9 @@ Hyperparameters: $γ = 0.9$, convergence threshold $θ = 1e-10$.
 
 ### Elementwise form\
 
-For each state `s`, one sweep performs:
+For each state `s`, one sweep performs:\
 $V_{k+1}(s) = max_a [ Σ_r p(r|s,a)·r + γ · Σ_{s'} p(s'|s,a) · V_k(s') ]$\
-└──────────────────── Q_k(s, a) ───────────────────────┘\
+└──────────────────── Q_k(s, a) ───────────────────────┘
 
 
 In this code the model is deterministic, so the sums over `r` and `s'`
@@ -98,11 +98,11 @@ each sweep costs almost nothing.
 
 Because value iteration applies a **contraction** with modulus `γ`, the
 error decays geometrically:\
-$‖V_k − V‖_∞ ≤ γ^k · ‖V_0 − V‖_∞$\
+$‖V_k − V‖_∞ ≤ γ^k · ‖V_0 − V‖_∞$
 
 
 With $γ = 0.9$ and $θ = 1e-10$, the number of sweeps required is roughly\
-$k ≈ log(θ) / log(γ) ≈ 23 / 0.105 ≈ 220$ sweep\
+$k ≈ log(θ) / log(γ) ≈ 23 / 0.105 ≈ 220$ sweep
 
 
 which matches the observed count in practice (a few hundred sweeps,
