@@ -32,7 +32,7 @@ iteration:
    $v_{π_k} = r_{π_k} + γ · P_{π_k} · v_{π_k}$
 
    
-2. **Policy improvement.**
+2. **Policy improvement.**\
 $π_{k+1} = arg max_π ( r_π + γ · P_π · v_{π_k} )$
 
 
@@ -41,15 +41,15 @@ inner loop is stopped after a *fixed* number of sweeps — here\
 $j_{trunc} = 30$
 
 
-instead of being run until $v_{π_k}$ converges to machine precision.
+instead of being run until $v_{π_k}$ converges to machine precision.\
 
 ### Where it sits in the family
 
-| Algorithm                    | Inner sweeps per outer step |
-|------------------------------|-----------------------------|
-| Value iteration              | 1 Bellman-optimality update |
-| Truncated policy iteration   | $j_{trunc} = 30$              |
-| Full policy iteration        | until convergence           |
+| Algorithm                    | Inner sweeps per outer step |\
+|------------------------------|-----------------------------|\
+| Value iteration              | 1 Bellman-optimality update |\
+| Truncated policy iteration   | $j_{trunc} = 30$            |\
+| Full policy iteration        | until convergence           |\
 
 - Value iteration at the leftmost extreme is the cheapest per outer step
   but needs the most outer steps.
@@ -61,18 +61,18 @@ instead of being run until $v_{π_k}$ converges to machine precision.
   for many modern actor–critic methods, where the critic is only ever
   partially trained between two actor updates.
 
-### Elementwise form (identical to policy iteration)
+### Elementwise form (identical to policy iteration)\
 
-**Policy evaluation** — in truncated form, `j` runs from `0` to $j_{trunc-1}$:
+**Policy evaluation** — in truncated form, `j` runs from `0` to $j_{trunc-1}$:\
 $v_{π_k}^{(j+1)}(s) = Σ_a π_k(a|s) ·[ Σ_r p(r|s,a)·r+ γ · Σ_{s'} p(s'|s,a) · v_{π_k}^{(j)}(s') ]$ for all $s ∈ S$, j = 0, 1, ..., $j_{trunc − 1}$
 
 
-**Policy improvement:**
-$π_{k+1}(s) = arg max_π Σ_a π(a|s) ·( Σ_r p(r|s,a)·r + γ · Σ_{s'} p(s'|s,a) · v_{π_k}(s') )$
-└──────────────── $q_{π_k}(s, a)$ ────────────────┘
+**Policy improvement:**\
+$π_{k+1}(s) = arg max_π Σ_a π(a|s) ·( Σ_r p(r|s,a)·r + γ · Σ_{s'} p(s'|s,a) · v_{π_k}(s') )$\
+└──────────────────── $q_{π_k}(s, a)$ ───────────────────┘
 
 
-Let $a_{k(s)}$`*` = $argmax_{a}$ $q_{π_k}(s, a)$. Then the greedy policy is
+Let $a_{k(s)}$`*` = $argmax_{a}$ $q_{π_k}(s, a)$. Then the greedy policy is\
 $π_{k+1}(a|s) = 1 if a == a_{k(s)}$`*`, else 0
 
 
