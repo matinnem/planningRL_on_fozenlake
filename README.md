@@ -29,7 +29,7 @@ have to be estimated from sampled experience (Q-learning, SARSA, PPO…).
 ## Algorithm
 
 1. Initialise $V(s) = 0$ for every state $s ∈ S$.
-2. Repeat until $max_s |V_new(s) − V(s)| < θ$:
+2. Repeat until $max_s |V_{new}(s) − V(s)| < θ$:
    - for each state, compute $Q(s, a) = R(s, a, s') + γ·V(s')$ for every action
    - set $V(s) = max_a Q(s, a)$
 3. Extract the greedy policy: $π(s) = argmax_a Q(s, a)$.
