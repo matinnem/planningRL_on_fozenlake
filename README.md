@@ -123,16 +123,19 @@ Exact numbers depend on the convergence threshold `1e-10`.
 ## How to use this repo
 
 ```bash
-git clone git@github.com:matinnem/planningRL_methods_on_frozenlake_2x2_and_5x5.git
-cd planningRL_methods_on_frozenlake_2x2_and_5x5
+git clone git@github.com:matinnem/planningRL_on_frozenlake.git
+cd planningRL_on_frozenlake
 
 # pick an algorithm
 git checkout value-iteration
 python valueIteration.py
+python valueIteration5x5.py
 
 git checkout policy-iteration
 python policyIteration.py
+python policyIteration5x5.py
 
 git checkout truncated-policy-iteration
-python truncatedPolicyIteration.py
+python truncatedPolicyIteration5x5.py
+```
 Requirements: Python 3.8+ and NumPy.
