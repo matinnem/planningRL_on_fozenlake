@@ -17,9 +17,9 @@ Only Python + NumPy. No Gym, no Gymnasium.
 the reward function `R(s, a, s')` and the transition function
 `T(s, a) → s'`. Given that model, value iteration computes the optimal
 value function by repeatedly applying the **Bellman optimality operator**:
-
+```
 $V_{k+1}(s) = max_a [ R(s, a, s') + γ · V_k(s') ]$
-
+```markdown
 
 That is different from **learning**, where the model is unknown and values
 have to be estimated from sampled experience (Q-learning, SARSA, PPO…).
