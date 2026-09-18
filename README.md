@@ -92,8 +92,8 @@ Hand-coded grid; no external simulator.
 ## A 2×2 version
 
 The 2×2 environment is also included (`2x2` folder on each branch):
-s1 | s2 s2 = pit (−1), s4 = goal (+1)
-----+---- γ = 0.9
+s1 | s2          s2 = pit (−1), s4 = goal (+1)
+----+----        γ = 0.9
 s3 | s4
 
 
