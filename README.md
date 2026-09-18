@@ -139,5 +139,5 @@ git checkout truncated-policy-iteration
 python truncatedPolicyIteration5x5.py
 ```
 
-**outputs of every method is available in its branch.**
+**outputs of every method is available in its branch.**\
 Requirements: Python 3.8+ and NumPy.
