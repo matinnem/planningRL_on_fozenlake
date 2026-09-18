@@ -1,95 +1,111 @@
-# RL Planning Algorithms — 2×2 FrozenLake
-
-Two classical **planning** algorithms from reinforcement learning,
-implemented from scratch with only Python + NumPy. No Gym, no Gymnasium.
-
-Each algorithm lives on its own branch and has its own README:
-
-| Algorithm         | Branch             | File                  |
-|-------------------|--------------------|-----------------------|
-| Value Iteration   | `value-iteration`  | `valueIteration.py`   |
-| Policy Iteration  | `policy-iteration` | `policyIteration.py`  |
-
----
-
-## What's the difference?
-
-**Value iteration** directly applies the Bellman *optimality* operator:
-V_{k+1}(s) = max_a [ R(s, a, s') + γ · V_k(s') ]
 
 
-sweeping every state until `V` stops changing. The optimal policy is then
-read off greedily: `π(s) = argmax_a Q(s, a)`.
+```markdown
+# Truncated Policy Iteration on FrozenLake 2×2 and 5×5
 
-**Policy iteration** is not a direct solver of the Bellman optimality
-equation. Instead it alternates between two steps:
+A minimal, dependency-light implementation of **truncated policy
+iteration** — the middle point between value iteration and full policy
+iteration — on a hand-coded 5×5 FrozenLake grid (and a 2×2 toy version).
+Only Python + NumPy.
 
-1. **Policy evaluation** — solve `v_π = r_π + γ·P_π·v_π` for the current
-   policy `π`.
-2. **Policy improvement** — `π' = argmax_π ( r_π + γ·P_π·v_π )`.
-
-Both algorithms converge to the same optimal value function and policy.
-Value iteration does **one** Bellman-optimality update per sweep; policy
-iteration does **many** Bellman-expectation updates (the inner evaluation)
-plus **one** greedy update. The idea behind policy iteration is widely
-used in modern RL.
+> Part of `planningRL_methods_on_frozenlake_2x2_and_5x5`.
+> Companion branches: `value-iteration`, `policy-iteration`.
 
 ---
 
-## Environment (shared by both branches)
+## Why "planning", not "learning"?
 
-Hand-coded 2×2 FrozenLake:
-s1 | s2 Actions: 1 = Up 2 = Right
-----+---- 3 = Down 4 = Left 5 = Stay
-s3 | s4
+**Planning** assumes you already have a perfect model of the environment:
+`T(s, a) → s'` and `R(s, a, s')`. Given the model, you can compute the
+optimal value function and policy *without interacting with the
+environment*. This file sits squarely on the planning side.
+
+---
+```
+## Algorithm
+
+Truncated policy iteration follows the **same two-step loop** as policy
+iteration:
+
+1. **Policy evaluation.** Given $π_k$, iteratively compute $v_{π_k}$ from
+   the Bellman equation\
+   $v_{π_k} = r_{π_k} + γ · P_{π_k} · v_{π_k}$
+
+   
+2. **Policy improvement.**
+$π_{k+1} = arg max_π ( r_π + γ · P_π · v_{π_k} )$
+
+
+The **only** difference from full policy iteration is that in step 1 the
+inner loop is stopped after a *fixed* number of sweeps — here\
+$j_{trunc} = 30$
+
+
+instead of being run until $v_{π_k}$ converges to machine precision.
+
+### Where it sits in the family
+
+| Algorithm                    | Inner sweeps per outer step |
+|------------------------------|-----------------------------|
+| Value iteration              | 1 Bellman-optimality update |
+| Truncated policy iteration   | $j_{trunc} = 30$              |
+| Full policy iteration        | until convergence           |
+
+- Value iteration at the leftmost extreme is the cheapest per outer step
+  but needs the most outer steps.
+- Full policy iteration at the rightmost extreme needs the fewest outer
+  steps but pays for a fully-converged evaluation every time.
+- **Truncated policy iteration** sits between them, and shows that a
+  *perfectly* evaluated $v_{π_k}$ is not required for the improvement step
+  to still produce the correct greedy policy. That is the conceptual seed
+  for many modern actor–critic methods, where the critic is only ever
+  partially trained between two actor updates.
+
+### Elementwise form (identical to policy iteration)
+
+**Policy evaluation** — in truncated form, `j` runs from `0` to $j_{trunc-1}$:
+$v_{π_k}^{(j+1)}(s) = Σ_a π_k(a|s) ·[ Σ_r p(r|s,a)·r+ γ · Σ_{s'} p(s'|s,a) · v_{π_k}^{(j)}(s') ]$ for all $s ∈ S$, j = 0, 1, ..., $j_{trunc − 1}$
+
+
+**Policy improvement:**
+$π_{k+1}(s) = arg max_π Σ_a π(a|s) ·( Σ_r p(r|s,a)·r + γ · Σ_{s'} p(s'|s,a) · v_{π_k}(s') )$
+└──────────────── $q_{π_k}(s, a)$ ────────────────┘
+
+
+Let $a_{k(s)}$`*` = $argmax_{a}$ $q_{π_k}(s, a)$. Then the greedy policy is
+$π_{k+1}(a|s) = 1 if a == a_{k(s)}$`*`, else 0
 
 
 
-- `s2` = pit (reward −1)
-- `s4` = goal (reward +1)
-- invalid move (bumping a wall) = −1
+---
+
+## The 5×5 environment
+
+![5×5 FrozenLake layout](../main/images/frozenlake5x5_layout.png)
+
+- pits (blue) : `s7, s8, s13, s17, s19, s22` → reward `−10`
+- goal (red)  : `s18` → reward `+1`
+- bumping into a wall → `−1`
+- safe move → `0`
 - `γ = 0.9`
 
-Same reward and transition functions in both branches.
+---
+
+## Results
+
+![Optimal policy on the 5×5 grid](../main/images/frozenlake5x5_optimal_policy.png)
+
+Because each policy-evaluation step is capped at 30 sweeps, each outer
+iteration is much cheaper than in full policy iteration — and yet the
+optimal policy is still reached. In practice truncated policy iteration
+often requires **fewer total Bellman updates** than either of its two
+extremes.
 
 ---
 
-## Results (identical optimum, as expected)
-
-| State | Value |
-|-------|-------|
-| `s1`  | 9     |
-| `s2`  | 10    |
-| `s3`  | 10    |
-| `s4`  | 10    |
-
-Optimal policy:
-s1 ↓ s2 ↓
-s3 → s4 →
-
-
-Number of iterations:
-
-- Value iteration: ~170–330 outer sweeps (depends on the convergence
-  threshold).
-- Policy iteration: 3 outer iterations, each with ~880 inner evaluation
-  sweeps.
-
----
-
-## How to use this repo
+## Run it
 
 ```bash
-# clone
-git clone git@github.com:<USERNAME>/<REPO>.git
-cd <REPO>
-
-# run value iteration
-git checkout value-iteration
-python valueIteration.py
-
-# run policy iteration
-git checkout policy-iteration
-python policyIteration.py
-
-Requirements: Python 3.8+ and NumPy.
+python truncatedPolicyIteration5x5.py
+```
+Requires only Python 3.8+ and NumPy.
