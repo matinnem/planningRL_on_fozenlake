@@ -96,7 +96,7 @@ s2 = pit (−1), s4 = goal (+1)\
  γ = 0.9\
 s1 | s2 \
 ----+---- \
-s3 | s4 \
+s3 | s4 
 
 
 Because `s4` is not terminal in that toy version, the agent keeps collecting
