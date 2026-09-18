@@ -85,7 +85,7 @@ Hand-coded grid; no external simulator.
 
 ![5×5 FrozenLake layout](images/frozenlake5x5_layout.png)
 
-*Pits are shown in blue, the goal in red.*
+*Pits are shown in orange, the goal in blue.*
 
 ---
 
