@@ -30,17 +30,17 @@ have to be estimated from sampled experience (Q-learning, SARSA, PPO…).
 
 1. Initialise $V(s) = 0$ for every state $s ∈ S$.
 2. Repeat until $max_s |V_new(s) − V(s)| < θ$:
-   - for each state, compute $Q(s, a) = R(s, a, s') + γ·V(s')$ for every action\
+   - for each state, compute $Q(s, a) = R(s, a, s') + γ·V(s')$ for every action
    - set $V(s) = max_a Q(s, a)$
 3. Extract the greedy policy: $π(s) = argmax_a Q(s, a)$.
 
 Hyperparameters: $γ = 0.9$, convergence threshold $θ = 1e-10$.
 
-### Elementwise form\
+### Elementwise form
 
 For each state `s`, one sweep performs:\
 $V_{k+1}(s) = max_a [ Σ_r p(r|s,a)·r + γ · Σ_{s'} p(s'|s,a) · V_k(s') ]$\
-└──────────────────── Q_k(s, a) ───────────────────────┘
+└────────────────────── $Q_k(s, a)$ ─────────────────────────┘
 
 
 In this code the model is deterministic, so the sums over `r` and `s'`
@@ -74,7 +74,7 @@ s2 = pit (−1)\
 s4 = goal (+1)\
 $γ = 0.9$\
 s1 | s2 \
-----+----\ 
+----+----\
 s3 | s4 
 
 
