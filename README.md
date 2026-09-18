@@ -53,7 +53,7 @@ v_{π_k}^{(j+1)}(s) = Σ_a π_k(a|s) ·
     γ · Σ_{s'} p(s'|s,a) · v_{π_k}^{(j)}(s') ]  for all s ∈ S, j = 0, 1, 2, ...
 
 
-**Policy improvement** computes, for each state,
+**Policy improvement** computes, for each state,\
 π_{k+1}(s) = arg max_π Σ_a π(a|s) · ( Σ_r p(r|s,a)·r + γ · Σ_{s'} p(s'|s,a) · v_{π_k}(s') )\
 └───────────────────────────────── q_{π_k}(s, a) ────────────────────────────────────────┘
 
