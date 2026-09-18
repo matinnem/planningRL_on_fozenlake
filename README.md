@@ -22,7 +22,7 @@ That is different from **learning**, where the model is unknown and values
 must be estimated from sampled experience (Q-learning, SARSA, PPO…).
 
 ---
-
+```
 ## Algorithm
 
 Policy iteration is *not* a direct solver of the Bellman optimality
