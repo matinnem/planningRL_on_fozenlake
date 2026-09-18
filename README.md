@@ -29,14 +29,14 @@ Policy iteration is *not* a direct solver of the Bellman optimality
 equation. Instead it alternates between two steps:
 
 1. **Policy evaluation.** Given a policy `π_k`, compute its state value
-   `v_{π_k}` by solving the Bellman equation:\
+   `v_{π_k}` by solving the Bellman equation:
 v_{π_k} = r_{π_k} + γ · P_{π_k} · v_{π_k}
 
 
 where `r_{π_k}` and `P_{π_k}` come from the system model.
 
-2. **Policy improvement.** Using `v_{π_k}`, produce a better policy:\
-π_{k+1} = arg max_π ( r_π + γ · P_π · v_{π_k} )\
+2. **Policy improvement.** Using `v_{π_k}`, produce a better policy:
+π_{k+1} = arg max_π ( r_π + γ · P_π · v_{π_k} )
 
 
 
@@ -45,7 +45,7 @@ Repeat until the value (or policy) stops changing.
 ### Elementwise form
 
 **Policy evaluation** solves `v_{π_k} = r_{π_k} + γ·P_{π_k}·v_{π_k}`
-iteratively, one state at a time:\
+iteratively, one state at a time:
 
 v_{π_k}^{(j+1)}(s) = Σ_a π_k(a|s) ·
 [ Σ_r p(r|s,a)·r
@@ -53,9 +53,9 @@ v_{π_k}^{(j+1)}(s) = Σ_a π_k(a|s) ·
     γ · Σ_{s'} p(s'|s,a) · v_{π_k}^{(j)}(s') ]  for all s ∈ S, j = 0, 1, 2, ...
 
 
-**Policy improvement** computes, for each state,\
-π_{k+1}(s) = arg max_π Σ_a π(a|s) · ( Σ_r p(r|s,a)·r + γ · Σ_{s'} p(s'|s,a) · v_{π_k}(s') )
-└──────────────── q_{π_k}(s, a) ────────────────┘\
+**Policy improvement** computes, for each state,
+π_{k+1}(s) = arg max_π Σ_a π(a|s) · ( Σ_r p(r|s,a)·r + γ · Σ_{s'} p(s'|s,a) · v_{π_k}(s') )\
+└───────────────────────────────── q_{π_k}(s, a) ────────────────────────────────────────┘
 
 Let `a*_k(s) = arg max_a q_{π_k}(s, a)`. Then the greedy policy is\
 π_{k+1}(a|s) = 1 if a == a*_k(s), else 0
