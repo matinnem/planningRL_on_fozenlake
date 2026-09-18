@@ -1,4 +1,4 @@
-### 5.3 `README.md` on **`policy-iteration`**
+### **`policy-iteration`**
 ```markdown
 # Policy Iteration on FrozenLake 2×2 and 5×5
 
