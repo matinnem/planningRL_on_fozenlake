@@ -58,7 +58,7 @@ All three converge to the same optimal value function and policy.
 
 Hand-coded grid; no external simulator.
 
-1 2 3 4 5
+1 2 3 4 5\
 ┌────┬────┬────┬────┬────┐
 1 │ s1 │ s2 │ s3 │ s4 │ s5 │
 ├────┼────┼────┼────┼────┤
