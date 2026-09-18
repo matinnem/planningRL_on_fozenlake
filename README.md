@@ -53,6 +53,64 @@ v_{π_k}^{(j+1)}(s) = Σ_a π_k(a|s) ·
     γ · Σ_{s'} p(s'|s,a) · v_{π_k}^{(j)}(s') ]  for all s ∈ S, j = 0, 1, 2, ...
 
 
-**Policy improvement** computes, for each state,
+**Policy improvement** computes, for each state,\
+π_{k+1}(s) = arg max_π Σ_a π(a|s) ·
+( Σ_r p(r|s,a)·r + γ · Σ_{s'} p(s'|s,a) · v_{π_k}(s') )
+└──────────────── q_{π_k}(s, a) ────────────────┘\
+
+Let `a*_k(s) = arg max_a q_{π_k}(s, a)`. Then the greedy policy is\
+π_{k+1}(a|s) = 1 if a == a*_k(s), else 0\
+
+
+### Connection to value iteration
+
+Value iteration performs **one Bellman-optimality update per sweep**.
+Policy iteration performs **many Bellman-expectation updates** (the inner
+evaluation) followed by **one greedy step**. Both converge to the same
+optimum — policy iteration often in far fewer outer iterations, at the cost
+of the inner evaluation loop.
+
+The idea behind policy iteration is widely used in modern RL — for instance
+in actor–critic methods, where the "critic" plays the role of the policy
+evaluation step and the "actor" plays the role of the policy improvement
+step.
+
+---
+
+## The 5×5 environment
+
+![5×5 FrozenLake layout](images/frozenlake5x5_layout.png)
+
+- pits (blue) : `s7, s8, s13, s17, s19, s22` → reward `−10`
+- goal (red)  : `s18` → reward `+1`
+- bumping into a wall → `−1`
+- safe move → `0`
+
+## The 2×2 environment
+s2 = pit (−1), s4 = goal (+1)\
+s1 | s2\
+----+----\
+s3 | s4
+
+
+---
+
+## Results
+
+![Optimal policy on the 5×5 grid](images/frozenlake5x5_optimal_policy.png)
+
+Starting from a trivial policy (stay everywhere), policy iteration converges
+in very few **outer** iterations. Each outer iteration contains a *policy
+evaluation* loop that runs to convergence, so the total cost is larger than
+it looks — but the number of policy improvements (outer steps) is tiny
+because each greedy update is much better informed.
+
+---
+
+## Run it
+
+```bash
+python policyIteration.py
+python policyIteration5x5.py
 
 
