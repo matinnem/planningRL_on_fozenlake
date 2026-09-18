@@ -94,9 +94,9 @@ Hand-coded grid; no external simulator.
 The 2×2 environment is also included (`2x2` folder on each branch):
 s2 = pit (−1), s4 = goal (+1)\
  γ = 0.9\
-s1 | s2
-----+----
-s3 | s4
+s1 | s2 \
+----+---- \
+s3 | s4 \
 
 
 Because `s4` is not terminal in that toy version, the agent keeps collecting
