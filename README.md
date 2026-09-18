@@ -1,4 +1,4 @@
-
+### **`Truncated Policy Iteration`**
 
 ```markdown
 # Truncated Policy Iteration on FrozenLake 2×2 and 5×5
