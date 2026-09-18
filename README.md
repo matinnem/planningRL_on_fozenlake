@@ -1,95 +1,137 @@
-# RL Planning Algorithms — 2×2 FrozenLake
+# Planning RL methods on FrozenLake 2×2 and 5×5
 
-Two classical **planning** algorithms from reinforcement learning,
+Three classical **planning** algorithms from reinforcement learning,
 implemented from scratch with only Python + NumPy. No Gym, no Gymnasium.
 
-Each algorithm lives on its own branch and has its own README:
+| Algorithm                    | Branch                         |
+|------------------------------|--------------------------------|
+| Value Iteration              | `value-iteration`              |
+| Policy Iteration             | `policy-iteration`             |
+| Truncated Policy Iteration   | `truncated-policy-iteration`   |
 
-| Algorithm         | Branch             | File                  |
-|-------------------|--------------------|-----------------------|
-| Value Iteration   | `value-iteration`  | `valueIteration.py`   |
-| Policy Iteration  | `policy-iteration` | `policyIteration.py`  |
+Every branch contains its own README, the environment, and the algorithm's
+source file.
 
 ---
 
-## What's the difference?
+## The family of planning algorithms
 
-**Value iteration** directly applies the Bellman *optimality* operator:
+All three algorithms below assume we already have a **perfect model** of the
+environment: the reward function `R(s, a, s')` and the transition function
+`T(s, a) → s'`. Given the model, they compute the optimal value function and
+policy *without ever interacting with the environment*. That is the essence
+of **planning**, in contrast to **learning** (Q-learning, SARSA, PPO…), where
+the model is unknown and values must be estimated from sampled experience.
+
+They differ only in *how* they use the model:
+
+- **Value iteration** performs one *Bellman-optimality* update per sweep:
 V_{k+1}(s) = max_a [ R(s, a, s') + γ · V_k(s') ]
 
 
-sweeping every state until `V` stops changing. The optimal policy is then
-read off greedily: `π(s) = argmax_a Q(s, a)`.
+Very cheap per sweep, but usually many sweeps are needed.
 
-**Policy iteration** is not a direct solver of the Bellman optimality
-equation. Instead it alternates between two steps:
+- **Policy iteration** alternates between two steps until the policy stops
+changing:
 
-1. **Policy evaluation** — solve `v_π = r_π + γ·P_π·v_π` for the current
+1. *Policy evaluation* — solve `v_π = r_π + γ·P_π·v_π` for the current
    policy `π`.
-2. **Policy improvement** — `π' = argmax_π ( r_π + γ·P_π·v_π )`.
+2. *Policy improvement* — `π' = argmax_π (r_π + γ·P_π·v_π)`.
 
-Both algorithms converge to the same optimal value function and policy.
-Value iteration does **one** Bellman-optimality update per sweep; policy
-iteration does **many** Bellman-expectation updates (the inner evaluation)
-plus **one** greedy update. The idea behind policy iteration is widely
-used in modern RL.
+The inner evaluation is run *to convergence*, so each outer step is
+expensive but few outer steps are needed.
+
+- **Truncated policy iteration** is the same two-step loop as policy
+iteration, except the inner policy-evaluation is cut off after a *fixed
+number of sweeps* (here `j_trunc = 30`) instead of being run to
+convergence. This places it exactly between value iteration (1 inner
+sweep) and full policy iteration (unbounded inner sweeps), and shows that
+policy iteration does not need a perfectly evaluated value function at
+every step — an important idea that later reappears in modern
+actor–critic methods.
+
+All three converge to the same optimal value function and policy.
 
 ---
 
-## Environment (shared by both branches)
+## Environment
 
-Hand-coded 2×2 FrozenLake:
-s1 | s2 Actions: 1 = Up 2 = Right
-----+---- 3 = Down 4 = Left 5 = Stay
+Hand-coded grid; no external simulator.
+1 2 3 4 5
+┌────┬────┬────┬────┬────┐
+1 │ s1 │ s2 │ s3 │ s4 │ s5 │
+├────┼────┼────┼────┼────┤
+2 │ s6 │ s7 │ s8 │ s9 │s10 │
+├────┼────┼────┼────┼────┤
+3 │s11 │s12 │s13 │s14 │s15 │
+├────┼────┼────┼────┼────┤
+4 │s16 │s17 │s18 │s19 │s20 │
+├────┼────┼────┼────┼────┤
+5 │s21 │s22 │s23 │s24 │s25 │
+└────┴────┴────┴────┴────┘
+
+
+
+**Actions:** `↑ = 1`, `→ = 2`, `↓ = 3`, `← = 4`, `○ = 5` (stay).
+
+**Reward:**
+- reaching the goal `s18 = (4,3)` : `+1`
+- falling into a pit `s7, s8, s13, s17, s19, s22` : `−10`
+- bumping into a wall : `−1`
+- any other safe move : `0`
+
+**Discount factor:** `γ = 0.9`
+
+![5×5 FrozenLake layout](images/frozenlake5x5_layout.png)
+
+*Pits are shown in blue, the goal in red.*
+
+---
+
+## A 2×2 version
+
+The 2×2 environment is also included (`2x2` folder on each branch):
+s1 | s2 s2 = pit (−1), s4 = goal (+1)
+----+---- γ = 0.9
 s3 | s4
 
 
-
-- `s2` = pit (reward −1)
-- `s4` = goal (reward +1)
-- invalid move (bumping a wall) = −1
-- `γ = 0.9`
-
-Same reward and transition functions in both branches.
+Because `s4` is not terminal in that toy version, the agent keeps collecting
+`+1` forever and `V(s4) = 1 / (1 − γ) = 10`. It's a useful first toy, but
+the 5×5 environment is where the algorithms get interesting.
 
 ---
 
-## Results (identical optimum, as expected)
+## Results at a glance (5×5)
 
-| State | Value |
-|-------|-------|
-| `s1`  | 9     |
-| `s2`  | 10    |
-| `s3`  | 10    |
-| `s4`  | 10    |
+All three algorithms land on the same optimal policy:
 
-Optimal policy:
-s1 ↓ s2 ↓
-s3 → s4 →
+![Optimal policy on the 5×5 grid](images/frozenlake5x5_optimal_policy.png)
 
+- **Value iteration** — many sweeps, one Bellman-optimality update each.
+- **Policy iteration** — 3 outer iterations, each with ~150+ inner sweeps
+  until evaluation converges.
+- **Truncated policy iteration** — a few outer iterations, each with exactly
+  30 inner sweeps. Often reaches the same optimum in far fewer total
+  updates.
 
-Number of iterations:
-
-- Value iteration: ~170–330 outer sweeps (depends on the convergence
-  threshold).
-- Policy iteration: 3 outer iterations, each with ~880 inner evaluation
-  sweeps.
+Exact numbers depend on the convergence threshold `1e-10`.
 
 ---
 
 ## How to use this repo
 
 ```bash
-# clone
-git clone git@github.com:<USERNAME>/<REPO>.git
-cd <REPO>
+git clone git@github.com:matinnem/planningRL_methods_on_frozenlake_2x2_and_5x5.git
+cd planningRL_methods_on_frozenlake_2x2_and_5x5
 
-# run value iteration
+# pick an algorithm
 git checkout value-iteration
 python valueIteration.py
 
-# run policy iteration
 git checkout policy-iteration
 python policyIteration.py
 
+git checkout truncated-policy-iteration
+python truncatedPolicyIteration.py
 Requirements: Python 3.8+ and NumPy.
