@@ -1,7 +1,7 @@
 ### **`Value Iteration`** on FrozenLake 2×2 and 5×5
 ```markdown 
 # Value Iteration on FrozenLake 2×2 and 5×5
-A minimal, dependency-light implementation of **value iteration** — the
+A minimal, dependency-light implementation of ```**value iteration**``` — the
 classic dynamic-programming *planning* algorithm from reinforcement
 learning — on a hand-coded 2×2 and 5×5 FrozenLake grid.
 Only Python + NumPy. No Gym, no Gymnasium.
@@ -40,7 +40,7 @@ Hyperparameters: $γ = 0.9$, convergence threshold $θ = 1e-10$.
 
 For each state `s`, one sweep performs:\
 $V_{k+1}(s) = max_a [ Σ_r p(r|s,a)·r + γ · Σ_{s'} p(s'|s,a) · V_k(s') ]$\
-└────────────────────── $Q_k(s, a)$ ─────────────────────────┘
+└─────────── $Q_k(s, a)$ ─────────────┘
 
 
 In this code the model is deterministic, so the sums over `r` and `s'`
