@@ -47,7 +47,7 @@ instead of being run until $v_{π_k}$ converges to machine precision.\
 
 | Algorithm                    "     |     "Inner sweeps per outer step   |\
 |------------------------------"  |  "-----------------------------|\
-| Value iteration              "   "| 1 Bellman-optimality update |\
+| Value iteration              "   "| 1 BOE update |\
 | Truncated policy iteration   | $j_{trunc} = 30$              |\
 | Full policy iteration        | until convergence             |
 
