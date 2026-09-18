@@ -3,8 +3,8 @@
 ```markdown
 # Truncated Policy Iteration on FrozenLake 2×2 and 5×5
 
-A minimal, dependency-light implementation of **truncated policy
-iteration** — the middle point between value iteration and full policy
+A minimal, dependency-light implementation of "truncated policy
+iteration" — the middle point between value iteration and full policy
 iteration — on a hand-coded 5×5 FrozenLake grid (and a 2×2 toy version).
 Only Python + NumPy.
 
