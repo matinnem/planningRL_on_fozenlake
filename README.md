@@ -75,7 +75,7 @@ step.
 
 ## The 5×5 environment
 
-![5×5 FrozenLake layout](images/frozenlake5x5_layout.png)
+![5×5 FrozenLake layout](../main/images/frozenlake5x5_layout.png)
 
 - pits (blue) : `s7, s8, s13, s17, s19, s22` → reward `−10`
 - goal (red)  : `s18` → reward `+1`
@@ -93,7 +93,7 @@ s3 | s4
 
 ## Results
 
-![Optimal policy on the 5×5 grid](images/frozenlake5x5_optimal_policy.png)
+![Optimal policy on the 5×5 grid](../main/images/frozenlake5x5_optimal_policy.png)
 
 Starting from a trivial policy (stay everywhere), policy iteration converges
 in very few **outer** iterations. Each outer iteration contains a *policy
