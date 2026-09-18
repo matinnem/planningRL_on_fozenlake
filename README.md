@@ -106,7 +106,8 @@ because each greedy update is much better informed.
 ## Run it
 
 ```bash
-python policyIteration.py
+python policyIteration.py  # for 2x2 environment
 python policyIteration5x5.py
-
+```
+Requires only Python 3.8+ and NumPy.
 
